@@ -1,13 +1,15 @@
 pipeline {
-        agent any
-        stages ('checkout') {
-        steps {
-        sh "git clone https://github.com/fgoswami/hello-world-war.git"
+    agent { label 'java' }
+    stages {
+        stage('checkout') { 
+            steps {
+              sh "git clone https://github.com/shashankvirat/hello-world-war"
+            }
         }
-        }
-        stage ('build')
-    {
-    sh "mvn clean package"
+stage('build') { 
+            steps {
+              sh "mvn clean package"
+            }
+        }        
     }
-    }
-    }
+}
