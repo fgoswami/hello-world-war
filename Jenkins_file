@@ -2,7 +2,7 @@ pipeline {
         agent any
         stages ('checkout') {
         steps {
-        sh "git clone url"
+        sh "git clone https://github.com/fgoswami/hello-world-war.git"
         }
         }
         stage ('build')
