@@ -1,0 +1,13 @@
+pipeline {
+        agent any
+        stages ('checkout') {
+        steps {
+        sh "git clone url"
+        }
+        }
+        stage ('build')
+    {
+    sh "mvn clean package"
+    }
+    }
+    }
