@@ -1,0 +1,40 @@
+pipeline {
+    agent any    
+   // environment {
+   // DOCKERHUB_CREDENTIALS = credentials('dockerpswd')
+  //  }
+   stages {
+        stage('Checkout') { 
+            steps {
+	      sh "rm -rf hello-world-war"
+              sh "git clone https://github.com/fgoswami/hello-world-war"
+            }
+        }  
+        stage('Build'){
+	steps{
+	//sh "cp /home/ubuntu/Dockerfile /var/lib/jenkins/workspace/kubesdeployment"
+	sh "cd /var/lib/jenkins/workspace/kubesdeployment"
+	sh "docker build -t build_cicd:1.0 ."
+	}
+}
+stage('Docker hub login and publish'){
+	steps{
+	//sh "eho $DOCKERHUB_CREDENTIALS_PSW | docker login -u $DOCKERHUB_CREDENTIALS_USR --password-stdin"
+	sh "docker login -u riya9578 -p Falguni#123"
+	sh "docker tag build_cicd:1.0 riya9578/cicdpipeline:1.0"
+	sh "docker push riya9578/cicdpipeline:1.0"
+	}
+}
+stage('deploy'){
+                  agent { label 'kuber' }
+                  steps{
+                  sh " kubectl apply -f /root/pod.yml"
+                  sh " kubectl get pod "
+                  sh " kubectl get deployment "
+                  sh " kubectl get pod "
+                  sh " kubectl apply -f /root/myport.yml "
+                  sh " kubectl get svc "
+                  }
+                  }
+                  }
+                  }
